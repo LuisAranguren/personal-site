@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luis Aranguren · Builder · Investor · Optimist</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #04070f;
+      --card: rgba(14, 16, 25, 0.85);
+      --border: rgba(255, 255, 255, 0.12);
+      --accent: #5fe3c8;
+      --accent-strong: #4c7df2;
+      --text: #f6f8fb;
+      --muted: #b4bdd3;
+      font-family: "Inter", "Sora", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 15% 15%, rgba(95, 227, 200, 0.25), transparent 45%),
+        radial-gradient(circle at 80% 0%, rgba(76, 125, 242, 0.25), transparent 40%),
+        linear-gradient(160deg, #03050b 0%, #090b16 40%, #03050b 100%);
+      color: var(--text);
+      padding: 3rem 1.5rem 4rem;
+      display: flex;
+      justify-content: center;
+    }
+    a {
+      color: inherit;
+    }
+    .shell {
+      width: min(1200px, 100%);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(5, 6, 12, 0.95));
+      border-radius: 32px;
+      border: 1px solid var(--border);
+      padding: 3rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+    .shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(95, 227, 200, 0.08), transparent 50%);
+      pointer-events: none;
+    }
+    header {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .avatar {
+      width: min(260px, 100%);
+      aspect-ratio: 3 / 4;
+      border-radius: 34px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 35px 45px rgba(0, 0, 0, 0.55);
+      background: linear-gradient(145deg, #10131f, #07090f);
+      justify-self: center;
+      position: relative;
+    }
+    .avatar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.05);
+    }
+    .hero h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+    }
+    .hero h2 {
+      margin: 0 0 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+    .hero p {
+      margin-top: 0;
+      line-height: 1.6;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .tag {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.4rem 0.9rem;
+      font-size: 0.85rem;
+    }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    .cta {
+      border-radius: 999px;
+      padding: 0.8rem 1.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.04);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .cta.primary {
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      color: #05080f;
+      border: none;
+      box-shadow: 0 15px 35px rgba(79, 125, 242, 0.35);
+    }
+    nav.tabs {
+      margin: 2.5rem 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.6rem;
+      position: relative;
+      z-index: 2;
+    }
+    nav.tabs button {
+      padding: 0.95rem 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.03);
+      color: inherit;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    nav.tabs button.active,
+    nav.tabs button:hover {
+      background: var(--accent-strong);
+      color: #05080f;
+      border-color: transparent;
+    }
+    .tab-content {
+      display: none;
+      background: var(--card);
+      border-radius: 26px;
+      padding: 2.2rem;
+      border: 1px solid var(--border);
+      position: relative;
+      z-index: 2;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    h3 {
+      margin-top: 0;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    .values-list, .education, .philosophy {
+      padding: 1.3rem 1.5rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .values-list ul,
+    .education ul {
+      margin: 0;
+      padding-left: 1rem;
+    }
+    .values-list li,
+    .education li {
+      margin: 0.35rem 0;
+    }
+    .ventures-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+    .venture-card {
+      padding: 1.4rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .venture-card h4 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .venture-card small {
+      color: var(--muted);
+    }
+    .timeline {
+      display: grid;
+      gap: 1.2rem;
+    }
+    .event {
+      padding: 1.2rem 1.4rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .event strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+    }
+    .event em {
+      color: var(--muted);
+      font-style: normal;
+      font-size: 0.9rem;
+    }
+    .ask {
+      margin-top: 2rem;
+      padding: 1.6rem;
+      border-radius: 22px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .ask form {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    .ask input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.95rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.02);
+      color: inherit;
+    }
+    .ask button,
+    .code-row button {
+      padding: 0.95rem 1.6rem;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(125deg, var(--accent), var(--accent-strong));
+      color: #05080f;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 15px 30px rgba(79, 125, 242, 0.35);
+    }
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .suggestion {
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .answer {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      min-height: 70px;
+    }
+    .code-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .code-row input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.02);
+      color: inherit;
+    }
+    .updates-lock,
+    .updates-feed {
+      padding: 1.8rem;
+      border-radius: 22px;
+      background: rgba(7, 9, 16, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .updates-feed[hidden] {
+      display: none;
+    }
+    .updates-feed h3 {
+      margin-top: 0;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .update-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .update-section {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1.2rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .update-section h4 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .update-section p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .update-section ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--muted);
+    }
+    .update-section li {
+      margin: 0.3rem 0;
+    }
+    .metric-row {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .metric-card {
+      flex: 1;
+      min-width: 120px;
+      border-radius: 14px;
+      background: rgba(95, 227, 200, 0.08);
+      border: 1px solid rgba(95, 227, 200, 0.25);
+      padding: 0.9rem;
+      text-align: center;
+    }
+    .metric-card strong {
+      display: block;
+      font-size: 1.6rem;
+    }
+    .metric-card span {
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .mentor-chat {
+      margin-top: 1.5rem;
+      padding: 1.3rem 1.4rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .mentor-chat textarea {
+      width: 100%;
+      min-height: 110px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.9rem 1rem;
+      color: inherit;
+      resize: vertical;
+    }
+    .mentor-chat button {
+      align-self: flex-start;
+      border: none;
+      border-radius: 14px;
+      padding: 0.9rem 1.4rem;
+      background: linear-gradient(125deg, var(--accent), var(--accent-strong));
+      color: #05080f;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 15px 30px rgba(79, 125, 242, 0.3);
+    }
+    .mentor-chat-response {
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+    }
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.9rem;
+      margin-top: 1rem;
+    }
+    .logo-pill {
+      border-radius: 20px;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+    .logo-pill:hover {
+      border-color: rgba(95, 227, 200, 0.6);
+      background: rgba(95, 227, 200, 0.05);
+      transform: translateY(-2px);
+    }
+    .logo-pill__img {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .logo-pill__img img {
+      max-width: 80%;
+      max-height: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+    }
+    .logo-pill__img.logo-pill__img--empty {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .logo-pill__img.logo-pill__img--empty::after {
+      content: attr(data-label);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .logo-pill span {
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      font-size: 0.95rem;
+      display: block;
+    }
+    .logo-pill small {
+      display: block;
+      margin-top: 0.15rem;
+      font-size: 0.75rem;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--muted);
+    }
+    .resume-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    .resume-card {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 1.4rem 1.6rem;
+    }
+    .resume-card header {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.9rem;
+    }
+    .resume-card strong {
+      font-size: 1.05rem;
+    }
+    .resume-card .resume-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .resume-card ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--muted);
+    }
+    .resume-card li {
+      margin-bottom: 0.4rem;
+    }
+    .exit-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.05rem 0.5rem;
+      margin-left: 0.4rem;
+      border-radius: 999px;
+      background: rgba(95, 227, 200, 0.18);
+      color: var(--accent);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    footer {
+      margin-top: 2.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 2rem 0.5rem 2.5rem;
+      }
+      .shell {
+        padding: 1.8rem;
+      }
+      nav.tabs button {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="avatar">
+        <img src="profile_full.jpg" alt="Portrait of Luis Aranguren" />
+      </div>
+      <div class="hero">
+        <h2>Builder • Investor • Optimist</h2>
+        <h1>Luis Aranguren</h1>
+        <p>
+          Kellogg MBA candidate and Co-Founder of Neuforce, the AI studio helping companies design products that solve real problems
+          for real people. I operate between Guadalajara and Chicago translating insight into execution that compounds over time.
+        </p>
+        <div class="tags">
+          <span class="tag">Kellogg MBA · Zell Fellow</span>
+          <span class="tag">Guadalajara · Chicago</span>
+          <span class="tag">Building AI Products</span>
+          <span class="tag">Investor</span>
+          <span class="tag">Focus: Tech · Health · Finance · Food</span>
+        </div>
+        <div class="cta-row">
+          <a class="cta primary" href="mailto:luis@innovlac.com" target="_blank" rel="noreferrer">Email Luis</a>
+          <a class="cta" href="https://www.linkedin.com/in/luis-aranguren/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="cta" href="https://calendly.com" target="_blank" rel="noreferrer">Schedule Time</a>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button data-tab="story" class="active">Story & Values</button>
+      <button data-tab="ventures">Ventures & Investments</button>
+      <button data-tab="experience">Experience</button>
+      <button data-tab="updates">Mentor / Investor Updates</button>
+    </nav>
+
+    <section id="story" class="tab-content active">
+      <h3>Roots & Perspective</h3>
+      <div class="two-col">
+        <div>
+          <p>
+            I was born and raised in Guadalajara, Mexico. From an early age I saw that business is a vehicle for stewardship:
+            discipline creates freedom, and success should elevate others. That philosophy guides how I lead teams, serve customers,
+            and partner with investors.
+          </p>
+          <p>
+            Today I am pursuing my MBA at the Kellogg School of Management. I serve as Co-Director of the Kellogg Family Business
+            Association, am a Zell Fellow, and represent my generation on the Honor Code Committee. I am preparing for my next
+            chapter: continuing to build through entrepreneurship and, later, thoughtful acquisition models that connect heritage
+            with innovation.
+          </p>
+          <p>
+            My investment and operating interests sit at the intersection of tech, health, finance, and food. These are the markets
+            that shape daily life, and they reward builders who pair systems thinking with empathy to unlock outsized impact.
+          </p>
+        </div>
+        <div class="values-list">
+          <strong>Values I Operate By</strong>
+          <ul>
+            <li>Integrity: do what is right, not what is convenient.</li>
+            <li>Excellence: build things that endure with craftsmanship.</li>
+            <li>Discipline: consistent systems create results.</li>
+            <li>Purpose: business must deliver financial and human value.</li>
+            <li>Faith: gratitude and humility are daily practices.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:1.5rem;">
+        <div class="education">
+          <strong>Education & Programs</strong>
+          <ul>
+            <li>Kellogg School of Management · MBA · Zell Fellow · KFBO Co-Director.</li>
+            <li>Universidad Panamericana · B.S. Finance (Honors).</li>
+            <li>Universidad de Navarra & London School of Economics · International studies.</li>
+          </ul>
+        </div>
+        <div class="philosophy">
+          <strong>Philosophy & Rhythm</strong>
+          <p>
+            Building well is the best form of gratitude. I keep a daily system of prayer, focus, learning, and gratitude to stay grounded
+            while operating companies and supporting founders. Outside work you will find me with my wife Macarena, playing soccer or tennis,
+            or enjoying a good beer with friends while journaling about the next frontier.
+          </p>
+        </div>
+      </div>
+
+      <div class="ask">
+        <h4>Ask me anything</h4>
+        <p>Curious about my ventures, investing lens, or daily systems? Ask below and I’ll answer instantly.</p>
+        <form id="ask-form">
+          <input id="ask-input" type="text" placeholder="e.g. What is Neuforce building right now?" required />
+          <button type="submit">Ask</button>
+        </form>
+        <div class="suggestions" id="suggestions"></div>
+        <div class="answer" id="answer">Waiting for your question…</div>
+      </div>
+    </section>
+
+    <section id="ventures" class="tab-content">
+      <h3>Ventures & Platforms</h3>
+      <div class="ventures-grid">
+        <div class="venture-card">
+          <h4>Neuforce</h4>
+          <small><a href="https://neuforce.ai" target="_blank" rel="noreferrer">neuforce.ai</a></small>
+          <p>AI integration studio delivering automation and ROI in weeks. We pair Latin American engineering talent with
+            operator insight to build validated AI products for enterprise workflows.</p>
+        </div>
+        <div class="venture-card">
+          <h4>Arima</h4>
+          <small><a href="https://arima.mx" target="_blank" rel="noreferrer">arima.mx</a></small>
+          <p>Health & wellness supplements brand I co-founded to help people feel better physically and mentally through community
+            and science-backed products.</p>
+        </div>
+        <div class="venture-card">
+          <h4>Innovlac Capital</h4>
+          <small><a href="https://innovlac.com.mx" target="_blank" rel="noreferrer">innovlac.com.mx</a></small>
+          <p>Investment and venture-building platform with 20+ early-stage investments across AI, food tech, health tech, SaaS, and
+            consumer innovation. Expanding into acquisitions.</p>
+        </div>
+        <div class="venture-card">
+          <h4>Terra</h4>
+          <small>Real estate advisory</small>
+          <p>Exploring innovative models and sustainable projects that combine intelligent structuring with design-forward
+            developments.</p>
+        </div>
+        <div class="venture-card">
+          <h4>Mexican Innovation University (MIU)</h4>
+          <small>Ecosystem builder</small>
+          <p>Accelerator founded in college to equip young Mexican founders with practical tools, mentorship, and capital access.</p>
+        </div>
+        <div class="venture-card">
+          <h4>Cerby · Consultant</h4>
+          <small><a href="https://cerby.com" target="_blank" rel="noreferrer">cerby.com</a></small>
+          <p>Supported product strategy and GTM alignment for the security automation platform’s Latin American expansion.</p>
+        </div>
+      </div>
+      <div style="margin-top:2rem;">
+        <h3>Selected Investments</h3>
+        <div class="logo-grid">
+          <a class="logo-pill" href="https://www.adplist.org" target="_blank" rel="noreferrer" aria-label="ADPList mentorship network">
+            <div class="logo-pill__img">
+              <img src="https://logo.clearbit.com/adplist.org" alt="ADPList logo" loading="lazy" />
+            </div>
+            <div>
+              <span>ADPList</span>
+              <small>Mentor network</small>
+            </div>
+          </a>
+          <a class="logo-pill" href="https://www.allocate.co" target="_blank" rel="noreferrer" aria-label="Allocate investing platform">
+            <div class="logo-pill__img">
+              <img src="https://logo.clearbit.com/allocate.co" alt="Allocate logo" loading="lazy" />
+            </div>
+            <div>
+              <span>Allocate</span>
+              <small>Institutional access</small>
+            </div>
+          </a>
+          <a class="logo-pill" href="https://www.cerby.com" target="_blank" rel="noreferrer" aria-label="Cerby security platform">
+            <div class="logo-pill__img">
+              <img src="https://logo.clearbit.com/cerby.com" alt="Cerby logo" loading="lazy" />
+            </div>
+            <div>
+              <span>Cerby</span>
+              <small>Identity security</small>
+            </div>
+          </a>
+          <a class="logo-pill" href="https://misalud.ai" target="_blank" rel="noreferrer" aria-label="MiSalud telehealth">
+            <div class="logo-pill__img">
+              <img src="https://logo.clearbit.com/misalud.ai" alt="MiSalud logo" loading="lazy" />
+            </div>
+            <div>
+              <span>MiSalud</span>
+              <small>Digital health</small>
+            </div>
+          </a>
+          <a class="logo-pill" href="https://www.pact.vc" target="_blank" rel="noreferrer" aria-label="Pact future of work platform">
+            <div class="logo-pill__img">
+              <img src="https://logo.clearbit.com/pact.vc" alt="Pact logo" loading="lazy" />
+            </div>
+            <div>
+              <span>Pact</span>
+              <small>Future of work</small>
+            </div>
+          </a>
+          <a class="logo-pill" href="https://www.allocate.co" target="_blank" rel="noreferrer" aria-label="Premier Access Fund by Allocate">
+            <div class="logo-pill__img">
+              <img src="https://logo.clearbit.com/allocate.co" alt="Premier Access Fund logo" loading="lazy" />
+            </div>
+            <div>
+              <span>Premier Access Fund</span>
+              <small>Allocate flagship</small>
+            </div>
+          </a>
+          <a class="logo-pill" href="https://www.suggestic.com" target="_blank" rel="noreferrer" aria-label="Suggestic nutrition AI">
+            <div class="logo-pill__img">
+              <img src="https://logo.clearbit.com/suggestic.com" alt="Suggestic logo" loading="lazy" />
+            </div>
+            <div>
+              <span>Suggestic</span>
+              <small>Nutrition AI</small>
+            </div>
+          </a>
+          <a class="logo-pill" href="https://thincrs.com" target="_blank" rel="noreferrer" aria-label="Thincrs talent intelligence">
+            <div class="logo-pill__img">
+              <img src="https://logo.clearbit.com/thincrs.com" alt="Thincrs logo" loading="lazy" />
+            </div>
+            <div>
+              <span>Thincrs</span>
+              <small>Talent intelligence</small>
+            </div>
+          </a>
+          <a class="logo-pill" href="https://www.wizeline.com" target="_blank" rel="noreferrer" aria-label="Wizeline exit story">
+            <div class="logo-pill__img">
+              <img src="https://www.wizeline.ai/wp-content/uploads/2025/02/wozelinered.svg" alt="Wizeline logo" loading="lazy" />
+            </div>
+            <div>
+              <span>Wizeline <span class="exit-badge">Exit</span></span>
+              <small>Product studio</small>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="tab-content">
+      <h3>Experience</h3>
+      <div class="resume-cards">
+        <article class="resume-card">
+          <header>
+            <div>
+              <strong>Neuforce AI, Inc.</strong>
+              <div>Co-Founder and Board Member</div>
+            </div>
+            <div class="resume-meta">
+              <span>2025 – Present</span>
+              <span>Guadalajara, Mexico</span>
+            </div>
+          </header>
+          <ul>
+            <li>Co-founded Neuforce.ai with Wizeline’s former CTO to embed AI agents into business processes and automate tasks at scale.</li>
+            <li>Oversee legal structure, fundraising, commercial strategy, and team formation while leading early customer deployments.</li>
+          </ul>
+        </article>
+
+        <article class="resume-card">
+          <header>
+            <div>
+              <strong>Wizeline</strong>
+              <div>Business Solutions Manager, Technology & Innovation</div>
+            </div>
+            <div class="resume-meta">
+              <span>2023 – 2025</span>
+              <span>Guadalajara, Mexico</span>
+            </div>
+          </header>
+          <ul>
+            <li>Collaborated on go-to-market strategy, generating over $1M in pipeline and $200K in revenue by closing new leads.</li>
+            <li>Implemented new market offerings by validating emerging technologies with customers, boosting AI-focused pipeline by 80%.</li>
+            <li>Led GAIL, Wizeline’s AI Laboratory with Tec de Monterrey, impacting 15 companies and 2,000+ students.</li>
+            <li>Managed delivery of 30+ AI solutions by streamlining project processes and increasing operational efficiency.</li>
+          </ul>
+        </article>
+
+        <article class="resume-card">
+          <header>
+            <div>
+              <strong>Innovlac Ventures</strong>
+              <div>Founder, Independent Service Provider</div>
+            </div>
+            <div class="resume-meta">
+              <span>2022 – Present</span>
+              <span>Guadalajara, Mexico</span>
+            </div>
+          </header>
+          <ul>
+            <li>Raised $600K+ for early-stage startups by forming an angel group of 20+ investors and connecting global founders with capital.</li>
+            <li>Created two SPVs and a fund with $1M in assets, investing in 30+ rounds; consolidated them into a family fund.</li>
+            <li>Sourced deals for first-time investors from Mexico to the U.S., structuring contracts worth $400K+.</li>
+          </ul>
+        </article>
+
+        <article class="resume-card">
+          <header>
+            <div>
+              <strong>Suggestic</strong>
+              <div>Sales Development Representative</div>
+            </div>
+            <div class="resume-meta">
+              <span>2021 – 2022</span>
+              <span>Palo Alto, USA</span>
+            </div>
+          </header>
+          <ul>
+            <li>Developed and supervised comprehensive sales processes, enhancing CRM utilization and forecasting accuracy.</li>
+            <li>Built sales pipeline through targeted inbound and outbound efforts, managing over one hundred cold calls.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+  <section id="updates" class="tab-content">
+      <h3>Updates for Mentors & Investors</h3>
+      <div class="updates-lock" id="updates-lock">
+        <p>These updates share sensitive traction and capital plans. Enter the access code provided privately.</p>
+        <div class="code-row">
+          <input type="password" id="code-input" placeholder="Access code" />
+          <button id="code-btn">Unlock</button>
+        </div>
+        <small id="code-feedback"></small>
+      </div>
+      <div class="updates-feed" id="updates-feed" hidden>
+        <h3>North Star Focus</h3>
+        <div class="update-grid">
+          <div class="update-section">
+            <h4>Neuforce Growth Goals</h4>
+            <p>Continue to grow and validate Neuforce with a clear scorecard.</p>
+            <ul>
+              <li>Finish the first year with 10+ clients and more than $300K in revenue.</li>
+              <li>Narrow delivery to the repeatable AI automations that can evolve into standalone products.</li>
+              <li>Use every engagement to learn how mid-market operators adopt AI when they do not know where to begin.</li>
+            </ul>
+          </div>
+          <div class="update-section">
+            <h4>Product & Market Insight</h4>
+            <p>We see meaningful upside in launching products for the massive segment that needs AI yet lacks a roadmap. Each deployment informs the features, pricing, and positioning for those offerings.</p>
+            <p>Next step: formalize two product blueprints and begin lightweight pilots while keeping service delivery disciplined.</p>
+          </div>
+          <div class="update-section">
+            <h4>Revenue Trajectory</h4>
+            <p>Forecast for FY1 places us on track for the targets below. Retainer work in flight gives visibility into Q1 2026.</p>
+            <div class="metric-row">
+              <div class="metric-card">
+                <strong>10+</strong>
+                <span>Clients</span>
+              </div>
+              <div class="metric-card">
+                <strong>$300K</strong>
+                <span>Revenue</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Capital & Partner Strategy</h3>
+        <div class="update-grid">
+          <div class="update-section">
+            <h4>Strategic Investor Mandate</h4>
+            <p>Seeking a single strategic investor to complement the mostly self-funded model between Aníbal and myself.</p>
+            <ul>
+              <li>Must understand the value of integrating AI inside companies and help us de-risk cash flow.</li>
+              <li>Believes we can become one of the most important companies of the next decade as we learn, validate, and launch products.</li>
+              <li>Brings relationships that accelerate growth without diluting our disciplined operating cadence.</li>
+            </ul>
+          </div>
+          <div class="update-section">
+            <h4>ETA & Acquisition Exploration</h4>
+            <p>Building relationships in the ETA ecosystem to identify a company aligned with Arancia. This is a deliberate, parallel search—not a rushed mandate.</p>
+            <p>Focus: define an acquisition profile, meet searchers and operators, and map the capital stack that lets the family act as a strategic investor when the right opportunity surfaces.</p>
+          </div>
+        </div>
+
+        <h3>Other Company Updates</h3>
+        <div class="update-grid">
+          <div class="update-section">
+            <h4>Arima 2.0</h4>
+            <p>Pursuing a pivot to a single hero solution and bringing in another operator/partner plus investment to make it world-class.</p>
+            <ul>
+              <li>Focused product thesis documented in the “Arima 2.0” memo.</li>
+              <li>Active search for an operator who can lead day-to-day execution with global standards.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mentor-chat">
+          <h4>Questions or ideas?</h4>
+          <p>Send any questions, diligence requests, or intros here and I’ll follow up personally with the latest context.</p>
+          <form id="mentor-chat-form">
+            <textarea id="mentor-chat-input" placeholder="Drop your question or insight…" required></textarea>
+            <button type="submit">Share with Luis</button>
+          </form>
+          <div class="mentor-chat-response" id="mentor-chat-response">
+            Waiting for your message…
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Luis Aranguren · Built for meaningful conversations.
+    </footer>
+  </div>
+
+  <script>
+    const tabButtons = document.querySelectorAll("nav.tabs button");
+    const tabContents = document.querySelectorAll(".tab-content");
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tabButtons.forEach((b) => b.classList.remove("active"));
+        tabContents.forEach((tab) => tab.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    const qaKnowledge = [
+      {
+        question: "What is Neuforce working on?",
+        answer:
+          "Neuforce builds practical AI automations that integrate into existing ops. We automate manual workflows, improve UX, and deliver ROI in weeks, and each deployment informs our product roadmap."
+      },
+      {
+        question: "What industries interest you most?",
+        answer:
+          "I focus on tech, health, finance, and food, spaces where systems thinking plus empathy can unlock better services and healthier communities from Guadalajara to Chicago."
+      },
+      {
+        question: "Which companies have you backed?",
+        answer:
+          "Through Innovlac Capital and personal investing, I’ve supported platforms like Cerby, Flexclub, Suggestic, Pura Mente, Bluestein Ventures, AngelList opportunities, Wisdolia, Thincrs, and more across AI, wellness, fintech, and logistics."
+      },
+      {
+        question: "How did you start investing?",
+        answer:
+          "I made my first angel investment at fifteen out of curiosity. That evolved into Innovlac Capital, now holding 20+ positions across AI, food tech, health tech, SaaS, and consumer plays."
+      },
+      {
+        question: "What values guide your leadership?",
+        answer:
+          "Integrity, excellence, discipline, purpose, and faith. Business should create both financial and human value while honoring legacy."
+      },
+      {
+        question: "What are you studying at Kellogg?",
+        answer:
+          "I’m pursuing an MBA focused on Finance, General Management, and Marketing. I’m a Zell Fellow and Co-Director of KFBO, Kellogg’s community for legacy operators."
+      },
+      {
+        question: "What keeps you optimistic?",
+        answer:
+          "I partner with builders who care about people as much as performance. The best days blend disciplined execution with optimism, seeing problems as chances to design better systems."
+      },
+      {
+        question: "How do you recharge outside work?",
+        answer:
+          "My daily rhythm includes prayer, focus, learning, and gratitude. I recharge by playing soccer or tennis, journaling, and enjoying a good beer with friends and my wife Macarena."
+      },
+      {
+        question: "What’s next for Luis?",
+        answer:
+          "Preparing to acquire and grow a company that connects family-business legacy with innovation, bridging operational rigor and modern technology."
+      },
+    ];
+
+    const askForm = document.getElementById("ask-form");
+    const askInput = document.getElementById("ask-input");
+    const answerBox = document.getElementById("answer");
+    const suggestions = document.getElementById("suggestions");
+
+    qaKnowledge.forEach((item) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "suggestion";
+      chip.textContent = item.question;
+      chip.addEventListener("click", () => {
+        askInput.value = item.question;
+        answerBox.textContent = item.answer;
+      });
+      suggestions.appendChild(chip);
+    });
+
+    askForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const query = askInput.value.trim();
+      if (!query) return;
+      const answer = findAnswer(query.toLowerCase());
+      answerBox.textContent = answer;
+      askInput.value = "";
+    });
+
+    const mentorChatForm = document.getElementById("mentor-chat-form");
+    const mentorChatInput = document.getElementById("mentor-chat-input");
+    const mentorChatResponse = document.getElementById("mentor-chat-response");
+    mentorChatForm?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!mentorChatInput.value.trim()) return;
+      mentorChatResponse.textContent =
+        "Thanks for the note. I will follow up directly with the latest numbers and materials.";
+      mentorChatInput.value = "";
+    });
+
+    function findAnswer(query) {
+      for (const item of qaKnowledge) {
+        const hit = item.question.toLowerCase();
+        if (hit.includes(query) || query.includes(hit) || hasKeyword(query, item.answer)) {
+          return item.answer;
+        }
+      }
+      return "Let’s dive deeper live. Email me or grab time on my calendar and I’ll go beyond the headline.";
+    }
+
+    function hasKeyword(query, answer) {
+      const keywords = ["ai", "values", "kellogg", "invest", "arima", "innovlac", "neuforce", "family"];
+      return keywords.some((word) => query.includes(word) && answer.toLowerCase().includes(word));
+    }
+
+    const ACCESS_CODE = "LAC2025";
+    const codeInput = document.getElementById("code-input");
+    const codeBtn = document.getElementById("code-btn");
+    const lockBox = document.getElementById("updates-lock");
+    const feed = document.getElementById("updates-feed");
+    const feedback = document.getElementById("code-feedback");
+
+    codeBtn.addEventListener("click", () => {
+      const attempt = codeInput.value.trim();
+      if (!attempt) return;
+      if (attempt === ACCESS_CODE) {
+        lockBox.hidden = true;
+        feed.hidden = false;
+      } else {
+        feedback.textContent = "Incorrect code. Please contact Luis for access.";
+        feedback.style.color = "#ff8a8a";
+      }
+      codeInput.value = "";
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
