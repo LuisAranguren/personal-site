@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luis Aranguren · Builder · Investor · Optimist</title>
+  <link rel="icon" type="image/png" href="profile_full.jpg" />
   <style>
     :root {
       color-scheme: dark;
@@ -43,12 +44,45 @@
       position: relative;
       overflow: hidden;
     }
+    .floating-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(0px);
+      opacity: 0.18;
+      mix-blend-mode: screen;
+      animation: float 12s ease-in-out infinite;
+    }
+    .orb-one {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(95, 227, 200, 0.7), transparent 60%);
+      top: 60px;
+      right: -60px;
+      animation-delay: 0s;
+    }
+    .orb-two {
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(76, 125, 242, 0.7), transparent 55%);
+      bottom: 40px;
+      left: -40px;
+      animation-delay: 4s;
+    }
     .shell::after {
       content: "";
       position: absolute;
       inset: 0;
       background: radial-gradient(circle at top right, rgba(95, 227, 200, 0.08), transparent 50%);
       pointer-events: none;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     header {
       display: grid;
@@ -141,6 +175,12 @@
       gap: 0.6rem;
       position: relative;
       z-index: 2;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: none;
+    }
+    nav.tabs::-webkit-scrollbar {
+      display: none;
     }
     nav.tabs button {
       padding: 0.95rem 1rem;
@@ -178,12 +218,18 @@
       font-size: 0.9rem;
       color: var(--muted);
     }
+    .section-divider {
+      height: 2px;
+      width: 100%;
+      margin: 2rem 0;
+      background: linear-gradient(90deg, transparent, rgba(95, 227, 200, 0.45), transparent);
+    }
     .two-col {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1.5rem;
     }
-    .values-list, .education, .philosophy {
+    .values-list, .education, .philosophy, .focus-card, .daily-card {
       padding: 1.3rem 1.5rem;
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.04);
@@ -211,6 +257,12 @@
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
+      transition: transform 0.25s ease, border 0.25s ease, background 0.25s ease;
+    }
+    .venture-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(95, 227, 200, 0.4);
+      background: rgba(255, 255, 255, 0.06);
     }
     .venture-card h4 {
       margin: 0;
@@ -419,6 +471,103 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--muted);
     }
+    .journal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+    .journal-card {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .journal-card h5 {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 0.15; }
+      50% { transform: translateY(-20px); opacity: 0.3; }
+      100% { transform: translateY(0); opacity: 0.15; }
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 2rem 0.8rem 3rem;
+      }
+      .shell {
+        padding: 1.8rem;
+        border-radius: 24px;
+      }
+      .cta-row {
+        flex-direction: column;
+      }
+      nav.tabs {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+      .ventures-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .tab-content {
+        padding: 1.5rem;
+      }
+      .mentor-chat textarea {
+        min-height: 90px;
+      }
+    }
+    .focus-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .focus-list li {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+    .focus-list li::before {
+      content: "•";
+      color: var(--accent);
+    }
+    .investing-card {
+      padding: 1.5rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(95, 227, 200, 0.15), rgba(76, 125, 242, 0.1));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      margin-top: 1.5rem;
+    }
+    .investing-pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .pillar {
+      border-radius: 18px;
+      padding: 0.9rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+      font-weight: 600;
+    }
+    .pillar span {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
     .logo-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -557,7 +706,9 @@
 </head>
 <body>
   <div class="shell">
-    <header>
+    <span class="floating-orb orb-one"></span>
+    <span class="floating-orb orb-two"></span>
+    <header class="reveal">
       <div class="avatar">
         <img src="profile_full.jpg" alt="Portrait of Luis Aranguren" />
       </div>
@@ -565,8 +716,9 @@
         <h2>Builder • Investor • Optimist</h2>
         <h1>Luis Aranguren</h1>
         <p>
-          Kellogg MBA candidate and Co-Founder of Neuforce, the AI studio helping companies design products that solve real problems
-          for real people. I operate between Guadalajara and Chicago translating insight into execution that compounds over time.
+          Kellogg MBA candidate and Co-Founder of Neuforce, an AI studio helping companies turn real problems into practical,
+          human-centered solutions. I split my time between Guadalajara and Chicago, turning insight into execution that compounds
+          over time.
         </p>
         <div class="tags">
           <span class="tag">Kellogg MBA · Zell Fellow</span>
@@ -576,9 +728,8 @@
           <span class="tag">Focus: Tech · Health · Finance · Food</span>
         </div>
         <div class="cta-row">
-          <a class="cta primary" href="mailto:luis@innovlac.com" target="_blank" rel="noreferrer">Email Luis</a>
+          <a class="cta primary" href="mailto:luis@neuforce.ai" target="_blank" rel="noreferrer">Email Luis</a>
           <a class="cta" href="https://www.linkedin.com/in/luis-aranguren/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a class="cta" href="https://calendly.com" target="_blank" rel="noreferrer">Schedule Time</a>
         </div>
       </div>
     </header>
@@ -590,32 +741,31 @@
       <button data-tab="updates">Mentor / Investor Updates</button>
     </nav>
 
-    <section id="story" class="tab-content active">
+    <section id="story" class="tab-content active reveal">
       <h3>Roots & Perspective</h3>
       <div class="two-col">
         <div>
           <p>
-            I was born and raised in Guadalajara, Mexico. From an early age I saw that business is a vehicle for stewardship:
-            discipline creates freedom, and success should elevate others. That philosophy guides how I lead teams, serve customers,
-            and partner with investors.
+            I was born and raised in Guadalajara, Mexico, in a family that has built businesses for more than a century. From an early
+            age I learned that business is stewardship: discipline creates freedom, and success should elevate others. That conviction
+            guides how I build companies, serve customers, and partner with investors.
           </p>
           <p>
             Today I am pursuing my MBA at the Kellogg School of Management. I serve as Co-Director of the Kellogg Family Business
-            Association, am a Zell Fellow, and represent my generation on the Honor Code Committee. I am preparing for my next
-            chapter: continuing to build through entrepreneurship and, later, thoughtful acquisition models that connect heritage
-            with innovation.
+            Organization, am a Zell Fellow, and represent my class on the Honor Code Committee. I am preparing for my next chapter:
+            to keep building through entrepreneurship and, eventually, thoughtful acquisitions that connect heritage with innovation.
           </p>
           <p>
-            My investment and operating interests sit at the intersection of tech, health, finance, and food. These are the markets
-            that shape daily life, and they reward builders who pair systems thinking with empathy to unlock outsized impact.
+            My focus sits at the intersection of technology, health, finance, and food—markets that shape everyday life and reward
+            builders who pair systems thinking with empathy.
           </p>
         </div>
         <div class="values-list">
           <strong>Values I Operate By</strong>
           <ul>
             <li>Integrity: do what is right, not what is convenient.</li>
-            <li>Excellence: build things that endure with craftsmanship.</li>
             <li>Discipline: consistent systems create results.</li>
+            <li>Excellence: build things that endure with craftsmanship.</li>
             <li>Purpose: business must deliver financial and human value.</li>
             <li>Faith: gratitude and humility are daily practices.</li>
           </ul>
@@ -625,24 +775,51 @@
         <div class="education">
           <strong>Education & Programs</strong>
           <ul>
-            <li>Kellogg School of Management · MBA · Zell Fellow · KFBO Co-Director.</li>
+            <li>Kellogg School of Management · MBA · Zell Fellow · Co-Director, Kellogg Family Business Organization.</li>
             <li>Universidad Panamericana · B.S. Finance (Honors).</li>
-            <li>Universidad de Navarra & London School of Economics · International studies.</li>
+            <li>Universidad de Navarra & London School of Economics · International studies and leadership programs.</li>
           </ul>
         </div>
         <div class="philosophy">
           <strong>Philosophy & Rhythm</strong>
           <p>
-            Building well is the best form of gratitude. I keep a daily system of prayer, focus, learning, and gratitude to stay grounded
-            while operating companies and supporting founders. Outside work you will find me with my wife Macarena, playing soccer or tennis,
-            or enjoying a good beer with friends while journaling about the next frontier.
+            Building well is my way of showing gratitude. Every day I practice prayer, learning, and focus to stay grounded while operating
+            companies and supporting founders.
           </p>
+          <p>
+            Outside of work I spend time with my wife Macarena, play soccer or tennis, or enjoy a good beer with friends while thinking about
+            the next frontier.
+          </p>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:1.3rem;">
+        <div class="daily-card">
+          <strong>Daily Systems</strong>
+          <p>Morning rhythm: prayer, gratitude, reading, and writing a short “focus note.” Weekly rhythm: coaching Neuforce teams, founder calls, and partner check-ins.</p>
+        </div>
+        <div class="focus-card">
+          <strong>Current Focus</strong>
+          <ul class="focus-list">
+            <li>Building Neuforce into a leading AI integration and product company.</li>
+            <li>Exploring long-term acquisition opportunities, getting to know more about the community and model.</li>
+            <li>Deepening my MBA journey at Kellogg with emphasis on finance, entrepreneurship, and leadership.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="investing-card">
+        <strong>Investing Thesis</strong>
+        <p>I invest through a family-backed lens that blends patient capital with disciplined operating playbooks. The through-line: create durable value by modernizing legacy sectors with technology, design, and stewardship.</p>
+        <div class="investing-pillars">
+          <div class="pillar">AI Systems<span>Automation, workflow design</span></div>
+          <div class="pillar">Health & Wellness<span>Human-centered solutions</span></div>
+          <div class="pillar">Finance & Infrastructure<span>Capital access, fintech</span></div>
+          <div class="pillar">Food & Consumer<span>Brand, supply, experience</span></div>
         </div>
       </div>
 
       <div class="ask">
         <h4>Ask me anything</h4>
-        <p>Curious about my ventures, investing lens, or daily systems? Ask below and I’ll answer instantly.</p>
+        <p>This site is a living resume and open journal. Curious about my ventures, investing lens, or daily systems? Ask below and I’ll answer instantly.</p>
         <form id="ask-form">
           <input id="ask-input" type="text" placeholder="e.g. What is Neuforce building right now?" required />
           <button type="submit">Ask</button>
@@ -650,34 +827,52 @@
         <div class="suggestions" id="suggestions"></div>
         <div class="answer" id="answer">Waiting for your question…</div>
       </div>
+      <div class="living-journal">
+        <h4>Living Journal</h4>
+        <p>Short reflections from the last few weeks. These notes keep the site alive and share what I’m learning in real time.</p>
+        <div class="journal-grid">
+          <div class="journal-card">
+            <h5>What AI Clients Really Need</h5>
+            <p>Every deployment reminds me that operators don’t want hype—they want believable ROI and patient integration partners.</p>
+          </div>
+          <div class="journal-card">
+            <h5>Lessons from ETA Dinners</h5>
+            <p>Listening to searchers has reframed how I think about succession. Patience plus empathy make all the difference.</p>
+          </div>
+          <div class="journal-card">
+            <h5>Designing Daily Focus</h5>
+            <p>My morning “focus note” forces clarity: one relationship to deepen, one system to improve, one idea to explore.</p>
+          </div>
+        </div>
+      </div>
     </section>
+    <div class="section-divider"></div>
 
-    <section id="ventures" class="tab-content">
+    <section id="ventures" class="tab-content reveal">
       <h3>Ventures & Platforms</h3>
+      <p>A look at the ventures and platforms I have built or supported—each driven by a shared goal: create real value, empower people, and build with integrity.</p>
       <div class="ventures-grid">
         <div class="venture-card">
           <h4>Neuforce</h4>
           <small><a href="https://neuforce.ai" target="_blank" rel="noreferrer">neuforce.ai</a></small>
-          <p>AI integration studio delivering automation and ROI in weeks. We pair Latin American engineering talent with
-            operator insight to build validated AI products for enterprise workflows.</p>
+          <p>AI integration studio helping companies automate workflows and unlock ROI in weeks, pairing Latin American engineering
+            talent with operator insight.</p>
         </div>
         <div class="venture-card">
           <h4>Arima</h4>
           <small><a href="https://arima.mx" target="_blank" rel="noreferrer">arima.mx</a></small>
-          <p>Health & wellness supplements brand I co-founded to help people feel better physically and mentally through community
-            and science-backed products.</p>
+          <p>Science-backed wellness brand focused on natural supplements that improve daily well-being through community and trust.</p>
         </div>
         <div class="venture-card">
           <h4>Innovlac Capital</h4>
           <small><a href="https://innovlac.com.mx" target="_blank" rel="noreferrer">innovlac.com.mx</a></small>
-          <p>Investment and venture-building platform with 20+ early-stage investments across AI, food tech, health tech, SaaS, and
-            consumer innovation. Expanding into acquisitions.</p>
+          <p>Family-backed investment and venture-building platform with 20+ early-stage investments across AI, food tech, health tech,
+            SaaS, and consumer innovation.</p>
         </div>
         <div class="venture-card">
           <h4>Terra</h4>
           <small>Real estate advisory</small>
-          <p>Exploring innovative models and sustainable projects that combine intelligent structuring with design-forward
-            developments.</p>
+          <p>Advisory exploring sustainable, design-forward developments that blend intelligent structuring with long-term stewardship.</p>
         </div>
         <div class="venture-card">
           <h4>Mexican Innovation University (MIU)</h4>
@@ -687,7 +882,7 @@
         <div class="venture-card">
           <h4>Cerby · Consultant</h4>
           <small><a href="https://cerby.com" target="_blank" rel="noreferrer">cerby.com</a></small>
-          <p>Supported product strategy and GTM alignment for the security automation platform’s Latin American expansion.</p>
+          <p>Supported product strategy and go-to-market alignment for Cerby’s Latin American expansion.</p>
         </div>
       </div>
       <div style="margin-top:2rem;">
@@ -778,7 +973,9 @@
       </div>
     </section>
 
-    <section id="experience" class="tab-content">
+    <div class="section-divider"></div>
+
+    <section id="experience" class="tab-content reveal">
       <h3>Experience</h3>
       <div class="resume-cards">
         <article class="resume-card">
@@ -793,7 +990,7 @@
             </div>
           </header>
           <ul>
-            <li>Co-founded Neuforce.ai with Wizeline’s former CTO to embed AI agents into business processes and automate tasks at scale.</li>
+            <li>Co-founded <a href="https://neuforce.ai" target="_blank" rel="noreferrer">Neuforce.ai</a>, an AI integration studio that embeds intelligent agents into business workflows to automate tasks and surface measurable ROI.</li>
             <li>Oversee legal structure, fundraising, commercial strategy, and team formation while leading early customer deployments.</li>
           </ul>
         </article>
@@ -854,7 +1051,9 @@
       </div>
     </section>
 
-  <section id="updates" class="tab-content">
+  <div class="section-divider"></div>
+
+  <section id="updates" class="tab-content reveal">
       <h3>Updates for Mentors & Investors</h3>
       <div class="updates-lock" id="updates-lock">
         <p>These updates share sensitive traction and capital plans. Enter the access code provided privately.</p>
@@ -941,13 +1140,27 @@
     </section>
 
     <footer>
-      © <span id="year"></span> Luis Aranguren · Built for meaningful conversations.
+      © <span id="year"></span> Luis Aranguren · Built for meaningful conversations · Contact: <a href="mailto:luis@neuforce.ai">luis@neuforce.ai</a>
     </footer>
   </div>
 
   <script>
     const tabButtons = document.querySelectorAll("nav.tabs button");
     const tabContents = document.querySelectorAll(".tab-content");
+    const revealElements = document.querySelectorAll(".reveal");
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    revealElements.forEach((el) => revealObserver.observe(el));
+
     tabButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         tabButtons.forEach((b) => b.classList.remove("active"));
@@ -996,7 +1209,7 @@
       {
         question: "How do you recharge outside work?",
         answer:
-          "My daily rhythm includes prayer, focus, learning, and gratitude. I recharge by playing soccer or tennis, journaling, and enjoying a good beer with friends and my wife Macarena."
+          "My daily rhythm includes prayer, focus, learning, and gratitude. I recharge by playing soccer or tennis, and enjoying a good beer with friends and my wife Macarena."
       },
       {
         question: "What’s next for Luis?",
@@ -1049,7 +1262,7 @@
           return item.answer;
         }
       }
-      return "Let’s dive deeper live. Email me or grab time on my calendar and I’ll go beyond the headline.";
+      return "Let’s dive deeper live. Email me and I’ll go beyond the headline.";
     }
 
     function hasKeyword(query, answer) {
